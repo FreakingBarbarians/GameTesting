@@ -9,10 +9,13 @@ import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
+ * Any Object in the game world is a game Object. It is an empty container
+ * defined by it's components.
  *
- * @author 3101209
+ * @author Raymond Gao
  */
 public class gameObject {
+
     private ArrayList<Component> components;
-    
+
 }

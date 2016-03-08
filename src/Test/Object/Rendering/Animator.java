@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Test.Object;
+package Test.Object.Rendering;
 
 /**
- * Abstract Class, The most abstract of classes
+ * Controls animation. State can be changed. Keeps track if the animation is
+ * done or not.
+ *
  * @author Raymond Gao
  */
-public class Component {
-    
+public class Animator {
+
 }
