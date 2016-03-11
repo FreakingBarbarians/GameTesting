@@ -258,7 +258,7 @@ public class TheQuadExampleMoving {
         projectionMatrixLocation = GL20.glGetUniformLocation(pId, "projectionMatrix");
         viewMatrixLocation = GL20.glGetUniformLocation(pId, "viewMatrix");
         modelMatrixLocation = GL20.glGetUniformLocation(pId, "modelMatrix");
-
+        
         this.exitOnGLError("setupShaders");
     }
 
@@ -345,7 +345,8 @@ public class TheQuadExampleMoving {
         GL20.glUniformMatrix4(modelMatrixLocation, false, matrix44Buffer);
 
         GL20.glUseProgram(0);
-
+        
+        
         this.exitOnGLError("logicCycle");
     }
 

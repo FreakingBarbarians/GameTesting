@@ -9,10 +9,6 @@ package Test.Object.Rendering;
  *
  * @author 3101209
  */
-public class RenderException extends Exception {
-
-    RenderException(String no_program) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+public class ShaderProgram {
+    // May or may not need this
 }

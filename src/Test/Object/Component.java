@@ -6,9 +6,17 @@
 package Test.Object;
 
 /**
- * Abstract Class, The most abstract of classes
+ * Abstract Class, The most abstract of classes. Can be updated as time goes by.
+ *
  * @author Raymond Gao
  */
 public class Component {
-    
+
+    public void update(float dtime) {
+        throw new UnsupportedOperationException("Unimplemented Abstract");
+    }
+
+    public void destroy() {
+        throw new UnsupportedOperationException("Unimplemented Abstract");
+    }
 }

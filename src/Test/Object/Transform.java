@@ -22,22 +22,22 @@ public class Transform extends Component {
     /**
      * The position of the gameObject in game space, (x,y,z)
      */
-    private Vector3f position;
-
-    /**
-     * The dimensions of the gameObject, (x,y)
-     */
-    private Vector2f dimensions;
+    public Vector3f position;
 
     /**
      * The Scale of the gameObject, (x,y)
      */
-    private Vector2f scale = new Vector2f(1f, 1f);
+    public Vector2f scale = new Vector2f(1f, 1f);
 
     /**
      * The rotation of the gameObject, (x,y,z) (0,0,0) points east
      */
-    private Vector3f rotation = new Vector3f(0, 0, 0);
+    public Vector3f rotation = new Vector3f(0, 0, 0);
+    
+    /**
+     * The dimensions of the gameObject, (x,y)
+     */
+    private Vector2f dimensions;
 
     /**
      * The associated GLObject, used for rendering.
@@ -149,4 +149,10 @@ public class Transform extends Component {
     public GLQuad getGLQuad() {
         return glObject;
     }
+
+    @Override
+    public void update(float dtime) {
+        // do nothing
+    }
+
 }

@@ -5,8 +5,6 @@
  */
 package Test.Object.Rendering;
 
-import Test.Object.TimingException;
-
 /**
  * Holds an animation, and can play through it. Does not draw, instead returns
  * an id corresponding to a texture.
@@ -14,6 +12,12 @@ import Test.Object.TimingException;
  * @author Raymond Gao
  */
 public class Animation {
+
+    /**
+     * the name of the animation, idle is a special name. Refer to animator doc
+     * for more information
+     */
+    private String name;
 
     /**
      * An animation, stores an array of loaded Textures' ID's in the GL Context
@@ -43,13 +47,20 @@ public class Animation {
     private boolean over = true;
 
     /**
+     * The OpenGL id for the frame of animation
+     */
+    private int frameId;
+
+    /**
      * Creates an animation based on an array, and whether or not the anim is
      * looping
      *
+     * @param name
      * @param animArray
      * @param looping
      */
-    public Animation(int[][] animArray, boolean looping) {
+    public Animation(String name, int[][] animArray, boolean looping) {
+        this.name = name;
         this.looping = looping;
         this.animArray = animArray;
         animatedTime = 0;
@@ -108,10 +119,33 @@ public class Animation {
 
         for (int i = animArray.length - 1; i >= 0; i--) {
             if (animatedTime > animArray[i][1]) {
-                return animArray[i][0];
+                this.frameId = animArray[i][0];
+                return this.frameId;
             }
         }
-        throw new TimingException(); // change this exception to animation exception
+        throw new TimingException();
+    }
+
+    /**
+     * Returns true, if the animation is playing
+     *
+     * @return
+     */
+    public boolean isPlaying() {
+        return !this.over;
+    }
+
+    /**
+     * returns the name of this animation
+     *
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
+
+    public int getFrame() {
+        return this.frameId;
     }
 
 }
