@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Test.Object;
+package Main.Object;
 
-import Test.Object.Rendering.GLQuad;
+import Main.Object.Rendering.GLQuad;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 

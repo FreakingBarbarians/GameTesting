@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Test.Object;
+package Main.Object;
 
 /**
  * Abstract Class, The most abstract of classes. Can be updated as time goes by.

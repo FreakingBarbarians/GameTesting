@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Test.Object.Rendering;
+package Main.Object.Rendering;
 
-import Test.Object.Component;
-import Test.Object.Rendering.GLQuad;
-import Test.Object.Rendering.Animation;
-import Test.Object.Transform;
+import Main.Object.Component;
+import Main.Object.Rendering.GLQuad;
+import Main.Object.Rendering.Animation;
+import Main.Object.Transform;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import org.lwjgl.BufferUtils;
@@ -101,17 +101,20 @@ public class Renderer extends Component {
     }
 
     /**
-     * Draws the Quad object to the screen.
-     *
+     * Draws the Quad object to the screen. A program must be set.
+     * 
      * @throws RenderException with an appropriate error message
      */
     private void draw() throws RenderException {
-        // manipulate matrix
-
+        // @TODO: more error handling + testing 
+        
+        //If no program return error
         if (this.program == -1) {
             throw new RenderException("No program");
         }
 
+        // manipulate matrix
+        
         modelMatrix.translate(transform.position);
         modelMatrix.scale(new Vector3f(transform.scale.x, transform.scale.y, 1));
         modelMatrix.rotate((float) Math.toDegrees((double) transform.rotation.x),
@@ -138,17 +141,19 @@ public class Renderer extends Component {
         GL20.glEnableVertexAttribArray(2);
 
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, quad.getIndiceArrayId());
-        
+
         GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_BYTE, 0);
-        
+
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-        
+
         GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
         GL20.glDisableVertexAttribArray(2);
-        
+
         GL30.glBindVertexArray(0);
         GL20.glUseProgram(0);
+        
+        
     }
 
 }

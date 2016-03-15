@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Test.Object.Rendering;
+package Main.Object.Rendering;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;

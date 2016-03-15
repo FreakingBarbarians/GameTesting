@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Test;
+package Main;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import java.io.FileInputStream;

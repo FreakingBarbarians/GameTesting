@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Test.Object.Rendering;
+package Main.Object.Rendering;
 
 import java.util.Hashtable;
 
@@ -30,6 +30,8 @@ public class Animator {
      */
     private Animation activeAnimation;
 
+    private boolean locked = false;
+
     /**
      * instantiates an animator with no animations
      */
@@ -49,9 +51,29 @@ public class Animator {
     }
 
     /**
-     * Adds an animation with name. Throws an AnimatorException
+     * Adds an animation with a specified name as the key. Throws an
+     * AnimatorException. Will NOT overwrite the local name inside each
+     * animation. Instead the name passed will overshadow the name. Useful for
+     * setting default animations like "idle".
      *
      * @param name
+     * @param animation
+     * @throws AnimatorException
+     */
+    public void addAnimation(Animation animation, String name)
+            throws AnimatorException {
+
+        if (animations.containsKey(name)) {
+            throw new AnimatorException("Animation Name Already Exists: "
+                    + animation.getName());
+        }
+        animations.put(name, animation);
+    }
+
+    /**
+     * Adds an animation using the animation's local name as the key. Throws an
+     * AnimatorException.
+     *
      * @param animation
      * @throws AnimatorException
      */
@@ -69,28 +91,38 @@ public class Animator {
      * interrupt is false, it will play the specified animation if the previous
      * animation finished playing.
      *
-     * @param name
+     * @param name Key of the animation
      * @param interrupt
      * @throws AnimatorException
      */
     public void playAnimation(String name, boolean interrupt)
             throws AnimatorException {
         if (!animations.containsKey(name)) {
-            throw new AnimatorException("Cannot play: " + name + ", animation does not exist");
+            throw new AnimatorException("Cannot play: " + name
+                    + ", animation does not exist");
         }
 
-        // Interrupting play
-        if (interrupt || activeAnimation.getName().equals("idle")) {
-            // Stop and reset the current anim (interrupt it)
-            activeAnimation.stop();
-            activeAnimation.reset();
-            // Play new anim
-            activeAnimation = animations.get(name);
-            activeAnimation.play();
-        } // None interrupting play
+        // Interrupting play. Idle can always be interrupted
+        if (interrupt || activeAnimation == animations.get("idle")) {
+            // Check if activeAnimation is null
+            if (activeAnimation == null) {
+                activeAnimation = this.animations.get(name);
+                activeAnimation.play();
+            } else {
+                // Otherwise
+                // Stop and reset the current anim (interrupt it)
+                activeAnimation.stop();
+                activeAnimation.reset();
+                // Play new anim
+                activeAnimation = animations.get(name);
+                activeAnimation.play();
+
+            }
+        } // Non-interrupting play
         else {
             if (activeAnimation.isPlaying()) {
-                throw new AnimatorException("Cannot play: " + name + ", animation already playing");
+                throw new AnimatorException("Cannot play: " + name
+                        + ", animation already playing");
             }
             // reset
             activeAnimation.reset();
@@ -110,23 +142,32 @@ public class Animator {
      */
     public int animate(float dtime) throws AnimatorException {
         try {
-            return activeAnimation.animate(dtime);
+            if (activeAnimation != null && activeAnimation.isPlaying()) {
+                activeAnimation.animate(dtime);
+            } else {
+                this.playAnimation("idle", true);
+            }
+            return activeAnimation.getFrame();
         } catch (TimingException e) {
             throw new AnimatorException("Could not resolve frame: animation: "
                     + activeAnimation.getName() + " at animation time: "
                     + activeAnimation.animatedTime + "ms");
         }
-
     }
 
     /**
      * Returns the id of the active texture (frame)
-     * @return 
+     *
+     * @return the id of the active texture
+     * @throws AnimatorException if no animation is playing (but idle should
+     * always be playing so, no animations in the animator)
      */
-    public int getFrame() {
-        return activeAnimation.getFrame();
+    public int getFrame() throws AnimatorException {
+        try {
+            return activeAnimation.getFrame();
+        } catch (NullPointerException e) {
+            throw new AnimatorException("no animation playing");
+        }
     }
 }
-
-
 // Think, should the animator interrupt, or should the animation be interruptable?
