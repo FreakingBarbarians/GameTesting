@@ -31,8 +31,8 @@ public class GLQuad {
      * The indices that define the triangles to draw to create the quad
      */
     private static final byte[] indices = {
-        0, 1, 0,
-        0, 2, 3
+        0, 1, 2,
+        2, 3, 0
     };
 
     /**
@@ -81,7 +81,7 @@ public class GLQuad {
     /**
      * The number of bytes per vertex
      */
-    private static final int bytesPerVertex = numVertices * elementsPerVertex;
+    private static final int bytesPerVertex = elementSize * elementsPerVertex;
 
     /**
      * The offset of the position elements in the databuffer in byte
@@ -133,10 +133,10 @@ public class GLQuad {
         };
 
         float[][] rgba = new float[][]{
-            {1, 1, 1, 1},
-            {1, 1, 1, 1},
-            {1, 1, 1, 1},
-            {1, 1, 1, 1}
+            {0, 1, 1, 1},
+            {1, 0, 1, 1},
+            {1, 1, 0, 1},
+            {1, 0, 1, 1}
         };
 
         float[][] st = new float[][]{
@@ -160,17 +160,18 @@ public class GLQuad {
         GL30.glBindVertexArray(vaoId);
 
         vboId = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data, GL15.GL_STATIC_DRAW);
 
         GL20.glVertexAttribPointer(0, GLQuad.positionElements,
                 GLQuad.elmentType, false, GLQuad.bytesPerVertex,
                 GLQuad.positionOffset);
 
-        GL20.glVertexAttribPointer(0, GLQuad.positionElements,
+        GL20.glVertexAttribPointer(1, GLQuad.colorElements,
                 GLQuad.elmentType, false, GLQuad.bytesPerVertex,
                 GLQuad.colorOffset);
 
-        GL20.glVertexAttribPointer(0, GLQuad.positionElements,
+        GL20.glVertexAttribPointer(2, GLQuad.textureElements,
                 GLQuad.elmentType, false, GLQuad.bytesPerVertex,
                 GLQuad.textureOffset);
 

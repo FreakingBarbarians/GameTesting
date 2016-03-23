@@ -23,9 +23,8 @@ import org.lwjgl.util.vector.Vector3f;
 /**
  * Does open Gl Stuff.
  *
- * For programs: Uses matrices to translate local coordinates to world world
- * coordinates. As well, ensures that: attrib 0 = is the input position attrib 1
- * = input color attrib 2 = input ST/UV coordinate (texture coordinate)
+ * Renderer does not need a program if program is set outside the renderer. And
+ * indeed this is better.
  *
  * The program needs a model Matrix, view Matrix, and projection Matrix
  *
@@ -60,11 +59,6 @@ public class Renderer extends Component {
     private final GLQuad quad;
 
     /**
-     * the id of the opengl shader program that is being used
-     */
-    private int program = -1;
-
-    /**
      * Creates a new renderer component with a transform and an animator
      *
      * @param transform
@@ -92,49 +86,47 @@ public class Renderer extends Component {
     }
 
     /**
-     * Sets the openGl shader program that this renderer will use
+     * Draws the Quad object to the screen. A program must be set. If the
+     * animator cannot resolve the animation frame, a purple box is shown
+     * instead.
      *
-     * @param programId
-     */
-    public void setProgram(int programId) {
-        this.program = programId;
-    }
-
-    /**
-     * Draws the Quad object to the screen. A program must be set.
-     * 
      * @throws RenderException with an appropriate error message
      */
-    private void draw() throws RenderException {
+    public void draw() throws RenderException {
+        // System.out.println("Method Found");
         // @TODO: more error handling + testing 
-        
-        //If no program return error
-        if (this.program == -1) {
-            throw new RenderException("No program");
-        }
 
-        // manipulate matrix
-        
-        modelMatrix.translate(transform.position);
-        modelMatrix.scale(new Vector3f(transform.scale.x, transform.scale.y, 1));
-        modelMatrix.rotate((float) Math.toDegrees((double) transform.rotation.x),
-                new Vector3f(1, 0, 0));
-        modelMatrix.rotate((float) Math.toDegrees((double) transform.rotation.y),
-                new Vector3f(0, 1, 0));
-        modelMatrix.rotate((float) Math.toDegrees((double) transform.rotation.z),
-                new Vector3f(0, 0, 1));
-        FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(4 * 4);
+        // manipulate model matrix
+        modelMatrix = new Matrix4f();
+        Matrix4f.translate(transform.position, modelMatrix, modelMatrix);
+        Matrix4f.scale(new Vector3f(transform.scale.x, transform.scale.y, 1),
+                modelMatrix,
+                modelMatrix);
+        Matrix4f.rotate((float) Math.toDegrees((double) transform.rotation.x),
+                new Vector3f(1, 0, 0), modelMatrix, modelMatrix);
+        Matrix4f.rotate((float) Math.toDegrees((double) transform.rotation.y),
+                new Vector3f(0, 1, 0), modelMatrix, modelMatrix);
+        Matrix4f.rotate((float) Math.toDegrees((double) transform.rotation.z),
+                new Vector3f(0, 0, 1), modelMatrix, modelMatrix);
+        FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
         modelMatrix.store(matrixBuffer);
+        matrixBuffer.flip();
 
-        GL20.glUseProgram(program);
-
-        GL20.glUniformMatrix4(GL20.glGetUniformLocation(program, "modelMatrix"),
+        // GL20.glUseProgram(program);
+        GL20.glUniformMatrix4(
+                GL20.glGetUniformLocation(Main.Main.program, "modelMatrix"),
                 false, matrixBuffer);
 
-        GL30.glBindVertexArray(quad.getVertexArrayId());
-
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, animator.getFrame());
+
+        try {
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, animator.getFrame());
+        } catch (AnimatorException e) {
+            System.out.println("No texture");
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        }
+
+        GL30.glBindVertexArray(quad.getVertexArrayId());
 
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
@@ -151,9 +143,6 @@ public class Renderer extends Component {
         GL20.glDisableVertexAttribArray(2);
 
         GL30.glBindVertexArray(0);
-        GL20.glUseProgram(0);
-        
-        
     }
 
 }

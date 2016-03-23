@@ -12,7 +12,10 @@ import org.lwjgl.util.vector.Vector3f;
 /**
  * The Transform Component gives a gameObject a physical presence in the game
  * world and is responsible for keeping track of and changing those attributes:
- * Dimensions, Rotation, Position, Scale
+ * Dimensions, Rotation, Position, Scale. If the transform is contained in a a
+ * GameObject contained by another GameObject, the position and rotation
+ * coordinates will be relative to the parent object. And the same applies for
+ * parents of this object. and so on and so forth.
  *
  * @author Raymond Gao
  */
@@ -30,10 +33,10 @@ public class Transform extends Component {
     public Vector2f scale = new Vector2f(1f, 1f);
 
     /**
-     * The rotation of the gameObject, (x,y,z) (0,0,0) points east
+     * The rotation of the gameObject, (x,y,z) (0,0,0) points north
      */
     public Vector3f rotation = new Vector3f(0, 0, 0);
-    
+
     /**
      * The dimensions of the gameObject, (x,y)
      */
@@ -42,8 +45,7 @@ public class Transform extends Component {
     /**
      * The associated GLObject, used for rendering.
      */
-    private GLQuad glObject = null;
-
+    // private GLQuad glObject = null;
     /**
      * Creates a new TransformComponent with a starting world position and
      * dimensions
@@ -54,7 +56,7 @@ public class Transform extends Component {
     public Transform(Vector3f xyz, Vector2f dimensions) {
         this.position = xyz;
         this.dimensions = dimensions;
-        glObject = new GLQuad(dimensions);
+        // glObject = new GLQuad(dimensions);
     }
 
     /**
@@ -64,7 +66,7 @@ public class Transform extends Component {
     public Transform() {
         this.position = new Vector3f(0, 0, 0);
         this.dimensions = new Vector2f(1, 1);
-        glObject = new GLQuad(dimensions);
+        // glObject = new GLQuad(dimensions);
     }
 
     /**
@@ -76,7 +78,7 @@ public class Transform extends Component {
     public Transform(Vector2f dimensions) {
         this.position = new Vector3f(0, 0, 0);
         this.dimensions = new Vector2f(1, 1);
-        glObject = new GLQuad(dimensions);
+        // glObject = new GLQuad(dimensions);
     }
 
     /**
@@ -141,15 +143,18 @@ public class Transform extends Component {
         scale.y = yScale;
     }
 
+    public void rotate(float degrees) {
+        this.rotation.z += degrees;
+    }
+
     /**
      * Returns the glQuad of this transform
      *
      * @return
      */
-    public GLQuad getGLQuad() {
-        return glObject;
-    }
-
+    // public GLQuad getGLQuad() {
+    // return glObject;
+    // }
     @Override
     public void update(float dtime) {
         // do nothing

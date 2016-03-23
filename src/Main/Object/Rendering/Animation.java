@@ -82,6 +82,10 @@ public class Animation {
         this.frameId = animArray[0][0];
     }
 
+    public Animation() {
+
+    }
+
     /**
      * Sets the animation to playing
      */
@@ -159,5 +163,4 @@ public class Animation {
     public int getFrame() {
         return this.frameId;
     }
-
 }

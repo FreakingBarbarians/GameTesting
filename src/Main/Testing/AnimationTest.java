@@ -35,6 +35,7 @@ public class AnimationTest {
         testAnimateLooping();
         preInit();
         testAnimateNotLooping();
+        System.out.println("Test Pass!");
     }
     
     public void preInit() {

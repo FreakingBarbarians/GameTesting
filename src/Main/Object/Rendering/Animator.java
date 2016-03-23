@@ -6,6 +6,8 @@
 package Main.Object.Rendering;
 
 import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controls animation. State can be changed. Keeps track if the animation is
@@ -29,8 +31,6 @@ public class Animator {
      * The active animation, only one can play at a time
      */
     private Animation activeAnimation;
-
-    private boolean locked = false;
 
     /**
      * instantiates an animator with no animations
@@ -120,6 +120,12 @@ public class Animator {
             }
         } // Non-interrupting play
         else {
+            if (activeAnimation == null) {
+                activeAnimation = animations.get(name);
+                activeAnimation.play();
+                return;
+            }
+
             if (activeAnimation.isPlaying()) {
                 throw new AnimatorException("Cannot play: " + name
                         + ", animation already playing");
@@ -163,11 +169,18 @@ public class Animator {
      * always be playing so, no animations in the animator)
      */
     public int getFrame() throws AnimatorException {
-        try {
+        if (activeAnimation != null) {
             return activeAnimation.getFrame();
-        } catch (NullPointerException e) {
-            throw new AnimatorException("no animation playing");
+        } else {
+            try {
+                this.playAnimation("idle", false);
+            } catch (AnimatorException ex) {
+                ex.appendToErrorMessage("no default animation to play");
+                throw ex;
+            }
         }
+        return activeAnimation.getFrame();
     }
 }
+
 // Think, should the animator interrupt, or should the animation be interruptable?

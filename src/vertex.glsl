@@ -15,7 +15,9 @@ void main() {
 	// gl_Position = in_Position;
 	// Override gl_Position with our new calculated position
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * in_Position;
-	
+        gl_Position.x = gl_Position.x/10;
+        gl_Position.y = gl_Position.y/10;
+
 	pass_Color = in_Color;
 	pass_TextureCoord = in_TextureCoord;
 }
