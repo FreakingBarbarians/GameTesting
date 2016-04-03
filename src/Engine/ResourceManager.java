@@ -18,11 +18,11 @@ import java.util.LinkedList;
  * openGL, the context must be in the same thread as the ResourceManager.
  * Generally only one ResourceManager will be used, so the class will be static.
  *
- * FIXTHIS: really, find out a way to separate contexts in openGL
+ * The RSM has 2 states, PLAY_STATE, LOAD_STATE. PLAY_STATE gives the RSM less
+ * cpu milliseconds per tick to complete load operations. LOAD_STATE gives the
+ * RSM almost all the time per tick for load operations.
  *
- * TODO: Consider using states Resource Manager could have, a "GAME_STATE" and a
- * "LOAD_STATE" in the GAME_STATE the resource manager would devote less time to
- * loading and more time to playing. In the LOAD_STATE the opposite is true;
+ * FIXTHIS: really, find out a way to separate contexts in openGL
  *
  * @author Raymond Gao
  */
@@ -88,22 +88,35 @@ public final class ResourceManager {
      * Updates the Resource Manager by 1 Tick.
      */
     public void update() {
-        
-        // Prune textures for unused textures
-        for (String key : textures.keySet()) {
-            if (textures.get(key)[1] > DECAY_TIME) {
-                textures.remove(key);
+
+//        // Prune textures for unused textures
+//        for (String key : textures.keySet()) {
+//            if (textures.get(key)[1] > DECAY_TIME) {
+//                textures.remove(key);
+//            }
+//        }
+//
+//        // increment time unused for all textures
+//        for (String key : textures.keySet()) {
+//            Integer[] temp = textures.get(key);
+//            temp[1] += (int) GameLoop.TICK_RATE;
+//            textures.replace(key, temp);
+//        }
+    }
+
+    public void deallocate(String textureID) {
+        if (textures.containsKey(textureID)) {
+            Integer[] texture = textures.get(textureID);
+            texture[1]--;
+            if (texture[1] <= 0) {
+                textures.remove(textureID);
+                return;
+            } else {
+                textures.replace(textureID, texture);
             }
+        } else if (audio.containsKey(textureID)) {
+            // Same shebang with audio.
         }
-        
-        // increment time unused for all textures
-        for (String key : textures.keySet()) {
-            Integer[] temp = textures.get(key);
-            temp[1] += (int) GameLoop.TICK_RATE;
-            textures.replace(key, temp);
-        }
-        
-        
     }
 
     /**
@@ -111,7 +124,7 @@ public final class ResourceManager {
      * should be asynchronous with rendering. OpenGLContexts are being a pain
      * right in this regard. Will always load at least 1 thing per tick.
      */
-    private static void executeEvent() {
+    public static void executeEvent() {
         long start_time = System.nanoTime() / 1000000; // FIXME: Maybe use Sys?
         while (eventQueue.size() > 0) {
             eventQueue.removeFirst().execute();
@@ -144,7 +157,7 @@ public final class ResourceManager {
      *
      * @param path
      */
-    private static void loadTextureResource(String path) {
+    public static void loadTextureResource(String path) {
         if (textures.containsKey(path)) {
             return;
         } else {
@@ -159,7 +172,7 @@ public final class ResourceManager {
      *
      * @param path
      */
-    private static void loadStaticTextureResource(String path) {
+    public static void loadStaticTextureResource(String path) {
         if (staticTextures.containsKey(path)) {
             return;
         } else {
@@ -192,6 +205,20 @@ public final class ResourceManager {
             maxLoadTime = 2;
         }
     }
+
+    private class loadMessage extends Message {
+        public void execute(Object[] args) {
+            // Switch case to load different texture types based off enum
+            // TODO This method.
+        }
+    }
 }
 
 // TODO: Test EVERY THING
+// TODO: Consider using a private message class for allocation.
+// Would be like:
+/*
+ allocateResource(String resourceName, String path, enum type?);
+ Will make a private load message in the evtqueue. And this would allow
+ the load commands to be private.
+ */

@@ -1,4 +1,6 @@
 # GameTesting
-Just testing out some open gl stuff
+Trying to build a simple 2D game engine. As simple as those things can be at any rate.
 
-Alot of classes outside the Testing package are just there for reference. The real stuff is inside the actual Testing Package.
+The Repo will be updated infrequently with large updates opposed to small ones.
+
+At the current time I'm not interested in any collaboration (I'm still in the "learning experience" phase) but that may change in a few months.

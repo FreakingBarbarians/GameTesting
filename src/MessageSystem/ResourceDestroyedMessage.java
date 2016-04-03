@@ -5,17 +5,18 @@
  */
 package MessageSystem;
 
-/**
- *
- * @author 3101209
- */
-public class Message {
+import Engine.ResourceManager;
 
-    public void execute(Object[] arguments) {
-        
-    }
+/**
+ * Sent when a resource is no longer being used by a game object.
+ *
+ * @author Raymond Gao
+ */
+public class ResourceDestroyedMessage extends Message {
+
+    private String resourceID;
 
     public void execute() {
-        
+        ResourceManager.deallocate(resourceID);
     }
 }
