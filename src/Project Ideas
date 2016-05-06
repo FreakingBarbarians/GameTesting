@@ -1,0 +1,17 @@
+Consider: The <String name, String path> system for resources forces each resource asset to be it's own file.
+For example an animation consisting of 30 frames will be 30 separate files! For dev i guess this is okay. but change it later.
+    Possible solutions:
+Keep data in one custom binary file.
+    Pros:
+    - Fast, one file, just need to seek. none of this traversing through file system
+    Cons:
+    - Hard, as in hard-coded. It would be hard to add new files, as everything's position would shift (or just add into the end)
+    - Difficult to implement, as of now i have no idea how.
+
+Represent Data as objects: i.e. there will be a animation object, represented by a file. maybe xyz.anim
+and this file would contain an bunch of image files.
+    Pros:
+    - Object oriented, --> organization + easy modification
+    - Supports modding
+    Cons:
+    - More files

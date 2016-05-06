@@ -11,11 +11,15 @@ package MessageSystem;
  */
 public class Message {
 
+    public Message() {
+
+    }
+
     public void execute(Object[] arguments) {
-        
+
     }
 
     public void execute() {
-        
+
     }
 }

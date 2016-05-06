@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package OldCode.Main.Object.Rendering;
+package Rendering;
 
 import OldCode.Main.Object.Component;
 import OldCode.Main.Object.GameObject;
@@ -114,7 +114,7 @@ public class Renderer extends Component {
         matrixBuffer.flip();
 
         // GL20.glUseProgram(program);
-        GL20.glUniformMatrix4(GL20.glGetUniformLocation(Deprecated.Main.Main.program, "modelMatrix"),
+        GL20.glUniformMatrix4(GL20.glGetUniformLocation(999/*@TODO: Fix this*/, "modelMatrix"),
                 false, matrixBuffer);
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);

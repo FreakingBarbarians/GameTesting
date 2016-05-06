@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package OldCode.Main.Object.Rendering;
+package Rendering;
 
 /**
  * Holds an animation, and can play through it. Does not draw, instead returns
