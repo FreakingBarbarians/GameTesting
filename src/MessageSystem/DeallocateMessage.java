@@ -5,7 +5,7 @@
  */
 package MessageSystem;
 
-import Engine.ResourceManager;
+import Engine.RSM;
 import java.util.HashMap;
 
 /**

@@ -8,7 +8,7 @@ package Components;
 import Engine.ObjectManager;
 import java.util.ArrayList;
 import java.util.HashMap;
-import Engine.ResourceManager;
+import Engine.RSM;
 import java.util.List;
 import java.util.UUID;
 
@@ -81,7 +81,7 @@ public class GameObject {
         this.gameObjects = gameObjects;
         this.parent = parent;
         this.manager = manager;
-        ResourceManager.notifyLoad(manifest);
+        RSM.notifyLoad(manifest);
     }
 
     /**

@@ -15,3 +15,12 @@ and this file would contain an bunch of image files.
     - Supports modding
     Cons:
     - More files
+
+
+For Game Objects - Consolidate into one file.
+
+Each GO will be stored as a template.
+
+Like, hmm... if i had a barrel GO.
+
+the data, sounds textures etc. etc. would be stored in a Barrel.file

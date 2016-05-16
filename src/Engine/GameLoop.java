@@ -5,6 +5,7 @@
  */
 package Engine;
 
+import java.util.HashMap;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -114,7 +115,13 @@ public class GameLoop {
         Display.setDisplayMode(new DisplayMode(width, height));
         Display.setTitle(title);
         Display.create(new PixelFormat());
-        // Some sort of loading.    
+        // Some sort of loading.  
+        
+        // Load
+            // hardcoded
+        HashMap<String,String> manifest = new HashMap();
+        manifest.put("ship", "ship.png");
+        RSM.notifyLoad(manifest);
     }
 
     private void shutDown() {
@@ -129,7 +136,7 @@ public class GameLoop {
     }
 
     private void manageResources() {
-        ResourceManager.update();
+        RSM.update();
     }
 
     private void gameLogic() {
